@@ -5,10 +5,20 @@ export default function CreateAccountForm({ signupFunction }) {
         <div>
             <form onSubmit={e => signupFunction(e)}>
                 <label htmlFor="createEmail">Email</label>
-                <input type="email" name="createEmail" placeholder="email" />
+                <section className="wrap-input100">
+                    <input type="text" name="createEmail" placeholder="user@email.com" />
+                    <span class="focus-input100"></span>
+                </section>
+                <br/>
+
                 <label htmlFor="createPassword">Password</label>
-                <input type="password" name="createPassword"/>
-                <button>Sign Up</button>
+                <section className="wrap-input100">
+                    <input type="password" name="createPassword" placeholder="password"/>
+                    <span class="focus-input100"></span>
+                </section>
+                <br/>
+
+                <button class="btn form-btn">Sign Up</button>
             </form>
         </div>
     );

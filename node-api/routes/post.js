@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const firebase = require('firebase/app');
 require("firebase/firestore");
+
 const db = firebase.firestore();
 
 let posts = [];
 router.get('/:postId', (req, res) => {
-    db.collection('blog-posts')
+    db.collection('posts')
     .doc(`${req.params.postId}`)
     .get()
     .then((doc) => {

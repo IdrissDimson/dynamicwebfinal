@@ -12,9 +12,8 @@ const sampleData = {
 }
 
 router.get("/test", (req, res) => {
-    db.collection("blog-posts")
-    .doc("test-doc")
-    .set(sampleData)
+    db.collection("posts")
+    .add(sampleData)
     .then(function(){res.send(`Test Data submitted`)})
     .catch(function(error){res.send('Error', error)})
 })
@@ -24,7 +23,7 @@ router.get("/", (req, res) => {
     let textVal =  req.query.text ? req.query.text : '';
     let authorVal = req.query.author ? req.query.author : '';
     
-    db.collection("blog-posts")
+    db.collection("posts")
     .add({
         title: titleVal,
         text: textVal,

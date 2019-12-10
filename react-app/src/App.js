@@ -11,19 +11,21 @@ import UserProfile from "./pages/UserProfile";
 import Signup from "./pages/Signup";
 import Feed from "./pages/Feed";
 
-let firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: "exercise-five-e7ed8.firebaseapp.com",
-  databaseURL: "https://exercise-five-e7ed8.firebaseio.com",
-  projectId: "exercise-five-e7ed8",
-  storageBucket: "exercise-five-e7ed8.appspot.com",
-  messagingSenderId: "806229689552",
-  appId: "1:806229689552:web:ee55aebb11119943b3cad5"
-};
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+
+  let firebaseConfig = {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: "exercise-five-e7ed8.firebaseapp.com",
+    databaseURL: "https://exercise-five-e7ed8.firebaseio.com",
+    projectId: "exercise-five-e7ed8",
+    storageBucket: "exercise-five-e7ed8.appspot.com",
+    messagingSenderId: "806229689552",
+    appId: "1:806229689552:web:ee55aebb11119943b3cad5"
+  };
 
   useEffect(() => {
     //initialize firebase
@@ -37,7 +39,7 @@ function App() {
       .catch(function(error) {
         console.log('error', error);
       });
-  }, [])
+  }, [firebaseConfig])
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function(user) {
@@ -45,10 +47,14 @@ function App() {
         // User is signed in.
         setLoggedIn(true);
         setUser(user);
+        setLoading(false);
+        console.log("heyyyyaya", user);
       } else {
         // No user is signed in.
         setLoggedIn(false);
         setUser({});
+        setLoading(false);
+        console.log("heyyyyaya", user);
       }
     });
   }, [])
@@ -71,6 +77,7 @@ function App() {
 
   function loginFunction(e) {
     e.preventDefault();
+
     let email = e.currentTarget.loginEmail.value;
     let password = e.currentTarget.loginPassword.value;
     
@@ -106,13 +113,13 @@ function App() {
           <Feed />
         </Route>
         <Route exact path="/profile">
-          { loggedIn ? <UserProfile user={user} /> : <Redirect to="/login" /> }
+          {!loading && loggedIn ? <UserProfile user={user} /> : <Redirect to="/profile" /> }
         </Route>
         <Route exact path="/signup">
-          { loggedIn ? <Redirect to="/" /> : <Signup signupFunction={signupFunction} /> }
+          {!loading && loggedIn ? <Redirect to="/" /> : <Signup signupFunction={signupFunction} /> }
         </Route>
         <Route exact path="/login">
-          { loggedIn ? <Redirect to="/" /> : <Login loginFunction={loginFunction}/> }
+          {!loading && loggedIn ? <Redirect to="/" /> : <Login loginFunction={loginFunction}/> }
         </Route>
       </Router>
     </div>
