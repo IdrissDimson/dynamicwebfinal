@@ -24,7 +24,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
+  height: 350px;
 }
 input[type="text"], input[type="password"]{
   line-height: 1.2;
@@ -32,6 +32,8 @@ input[type="text"], input[type="password"]{
   font-size: 16px;
   padding: 0 20px;
   background: transparent;
+  width: 88%;
+  border-radius: 20px;
 }
 .focus-input100 {
   display: block;
@@ -80,4 +82,26 @@ button:hover {
 .form-btn:hover{
   background-color: #8B4513;
   box-shadow: 0 10px 30px 0px rgba(210, 105, 30, 0.8);
+}
+.screech-feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section h1 {
+  width: 100%;
+  text-align: center;
+}
+.screech-feed div{
+  width: 40%;
+  height: 200px;
+  border: 1px solid #000;
+  margin: 5px;
+  border-radius: 25px;
+  padding: 25px;
+}
+.add-post {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }

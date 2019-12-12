@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, BrowserRouter as Router } from "react-router-dom";
+import axios from "axios";
 import * as firebase from 'firebase/app';
 import "firebase/auth";
 
@@ -19,14 +20,24 @@ function App() {
 
   let firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: "exercise-five-e7ed8.firebaseapp.com",
-    databaseURL: "https://exercise-five-e7ed8.firebaseio.com",
-    projectId: "exercise-five-e7ed8",
-    storageBucket: "exercise-five-e7ed8.appspot.com",
-    messagingSenderId: "806229689552",
-    appId: "1:806229689552:web:ee55aebb11119943b3cad5"
+    authDomain: "final-project-decad.firebaseapp.com",
+    databaseURL: "https://final-project-decad.firebaseio.com",
+    projectId: "final-project-decad",
+    storageBucket: "final-project-decad.appspot.com",
+    messagingSenderId: "199449178140",
+    appId: "1:199449178140:web:b3b29f0a51408e45f6efd9"
   };
-
+  function nameFunction(name, userId) {
+    axios.get(`https://final-dynamic-web.herokuapp.com/create-user?name=${name}&userId=${userId}`)
+        .then(function(response) {
+            console.log("it's working my gggg", response);
+            return response;
+        })
+        .catch(function(error) {
+            console.log("error", error);
+            return error;
+        })
+  }
   useEffect(() => {
     //initialize firebase
     if(!firebase.apps.length) {
@@ -48,13 +59,13 @@ function App() {
         setLoggedIn(true);
         setUser(user);
         setLoading(false);
-        console.log("heyyyyaya", user);
+        // console.log("heyyyyaya", user);
       } else {
         // No user is signed in.
         setLoggedIn(false);
         setUser({});
         setLoading(false);
-        console.log("heyyyyaya", user);
+        // console.log("heyyyyaya", user);
       }
     });
   }, [])
@@ -64,11 +75,14 @@ function App() {
 
     let email = e.currentTarget.createEmail.value;
     let password = e.currentTarget.createPassword.value;
+    let name = e.currentTarget.createName.value;
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function(response) {
+        console.log(response);
         setLoggedIn(true);
+        nameFunction(name, response.user.uid);
       })
       .catch(function(error) {
         console.log('error', error);       
@@ -110,10 +124,10 @@ function App() {
       <Header loggedIn={loggedIn} logoutFunction={logoutFunction}/>
       <Router>
         <Route exact path="/">
-          <Feed />
+          <Feed user={user}/>
         </Route>
         <Route exact path="/profile">
-          {!loading && loggedIn ? <UserProfile user={user} /> : <Redirect to="/profile" /> }
+          {!loading && loggedIn ? <UserProfile user={user} /> : <Login loginFunction={loginFunction}/> }
         </Route>
         <Route exact path="/signup">
           {!loading && loggedIn ? <Redirect to="/" /> : <Signup signupFunction={signupFunction} /> }

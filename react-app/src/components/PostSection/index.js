@@ -1,10 +1,10 @@
 import React from "react";
 
-export default function PostSection({ posts }) {
+export default function PostSection({ title, text }) {
     return (
         <div>
-            <h1>This is my screech</h1>
-            <p>fbakjbfabfiuabifbdkbfkdvafdasvfvadkvfidvfihvasdkhvk</p>
+            <h2>{title}</h2>
+            <p>{text}</p>
         </div>
     );
 }

@@ -5,9 +5,9 @@ require("firebase/firestore");
 const db = firebase.firestore();
 
 let posts = [];
-router.get('/:postId', (req, res) => {
-    db.collection('posts')
-    .doc(`${req.params.postId}`)
+router.get('/:userId', (req, res) => {
+    db.collection('users')
+    .doc(`${req.params.userId}`)
     .get()
     .then((doc) => {
         if (!doc.exists) {

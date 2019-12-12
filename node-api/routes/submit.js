@@ -13,7 +13,8 @@ const sampleData = {
 
 router.get("/test", (req, res) => {
     db.collection("posts")
-    .add(sampleData)
+    .doc("test-doc")
+    .set(sampleData)
     .then(function(){res.send(`Test Data submitted`)})
     .catch(function(error){res.send('Error', error)})
 })

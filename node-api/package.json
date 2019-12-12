@@ -1,16 +1,21 @@
 {
-  "name": "node-api",
+  "name": "screech",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "firebase": "^7.5.2"
+    "firebase": "^7.3.0",
+    "firebase-admin": "^8.7.0"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }

@@ -10,26 +10,28 @@ let firebaseConfig = {
     databaseURL: "https://final-project-decad.firebaseio.com",
     projectId: "final-project-decad",
     storageBucket: "final-project-decad.appspot.com",
+    messagingSenderId: "199449178140",
+    appId: "1:199449178140:web:b3b29f0a51408e45f6efd9"
 };
 // Initialize Firebase
 const firebaseDatabase = firebase.initializeApp(firebaseConfig);
 const db = firebaseDatabase.firestore();
 
-let allPosts = [];
-db.collection('posts')
-    .get()
-    .then((Posts) => {
-        Posts.forEach((post) => {
-            allPosts.push(post.data())
-            console.log("All posts:", post.data())
-        });
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    })
+let postsArray = [];
+
+let postsRef = db.collection('posts');
+let allPosts = postsRef.onSnapshot(snapshot => {
+    snapshot.forEach(doc => {
+        postsArray.push(doc.data());
+        console.log(doc.data());
+    });
+  }, err => {
+    console.log('Error getting documents', err);
+  });
+
 
 router.get('/', (req, res) => {
-    res.send(allPosts)
+    res.send(postsArray)
 })
 
 module.exports = router;
