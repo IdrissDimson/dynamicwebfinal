@@ -5,13 +5,16 @@ export default function AddPost({postFunction}) {
     return (
         <div className="add-post">
             <form onSubmit={e => postFunction(e)}>
-            {/* <form> */}
                 <label htmlFor="postTitle">Post Title</label>
-                <input type="text" name="postTitle" placeholder="Post Title" />
+                <section className="wrap-input100">
+                    <input type="text" name="postTitle" placeholder="Post Title" />
+                </section>
                 <br/>
 
                 <label htmlFor="postText">Post Text</label>
-                <input type="text" name="postText" placeholder="Write your text here"/>
+                <section className="wrap-input100">
+                    <input type="text" name="postText" placeholder="Write your text here"/>
+                </section>
                 <br/>
 
                 <button className="btn form-btn">Send Post</button>

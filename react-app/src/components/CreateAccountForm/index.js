@@ -3,7 +3,7 @@ import React from "react";
 export default function CreateAccountForm({ signupFunction }) {
     return (
         <div>
-            <form onSubmit={e => signupFunction(e)}>
+            <form className="form" onSubmit={e => signupFunction(e)}>
                 <label htmlFor="createName">Full Name</label>
                 <section className="wrap-input100">
                     <input type="text" name="createName" placeholder="Jane Doe" />
