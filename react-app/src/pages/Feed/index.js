@@ -49,14 +49,14 @@ export default function Feed({ user }) {
                 return error;
             })
     }
-    // console.log(user.uid);
+    console.log(post[0] && post[0].author);
     if (user.uid !== undefined) {
         return (
             <section>
                 <h1>Welcome Back to Screech, {postUser[0] && postUser[0].nameVal} </h1>
                 <AddPost postFunction={postFunction} />
                 <div className="screech-feed">
-                    {post[0] && post.map((post, i) => <PostSection key={i} title={post.title} text={post.text}/>)}
+                    {post[0] && post.map((post, i) => <PostSection key={i} author={post.author} title={post.title} text={post.text}  />)}
                 </div>
             </section>
         );
@@ -65,7 +65,7 @@ export default function Feed({ user }) {
             <section>
                 <h1>Welcome to Screech</h1>
                 <div className="screech-feed">
-                    {post[0] && post.map((post, i) => <PostSection key={i} title={post.title} text={post.text}/>)}
+                    {post[0] && post.map((post, i) => <PostSection key={i} title={post.title} text={post.text} author={post.author}/>)}
                 </div>
             </section>
         );
