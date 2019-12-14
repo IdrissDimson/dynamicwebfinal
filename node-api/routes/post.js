@@ -6,22 +6,24 @@ const db = firebase.firestore();
 
 let posts = [];
 router.get('/:postId', (req, res) => {
-    db.collection('posts')
-    .doc(`${req.params.postId}`)
-    .get()
-    .then((doc) => {
-        if (!doc.exists) {
-            console.log('No such document!');
-        } else {
-            posts = [];
-            posts.push(doc.data());
-            console.log('Document data:', doc.data());
-        }
-    })
-    .catch((err) => {
-        console.log('Error getting documents', err);
-    })
-    res.send(posts)
+    let postsArray = [];
+
+    let citiesRef = db.collection('posts');
+    let query = citiesRef.where('author', '==', `${req.params.postId}`).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                return;
+            }  
+            snapshot.forEach(doc => {
+                console.log(doc.id, '=>', doc.data());
+                postsArray.push(doc.data());
+            });
+            res.send(postsArray);
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
 })
 
 module.exports = router;

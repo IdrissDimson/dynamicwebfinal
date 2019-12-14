@@ -119,5 +119,15 @@ section h1 {
   background-color: #8B4513;
 }
 .profile-pic {
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
+}
+.profile-pic h2 {
+  text-align: center;
+}
+.monkey-pic {
+  float: right;
+  width: 200px;
+  height: 150px;
+  border-radius: 25px;
 }
