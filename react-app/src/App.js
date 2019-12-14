@@ -20,12 +20,12 @@ function App() {
 
   let firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: "final-project-decad.firebaseapp.com",
-    databaseURL: "https://final-project-decad.firebaseio.com",
-    projectId: "final-project-decad",
-    storageBucket: "final-project-decad.appspot.com",
-    messagingSenderId: "199449178140",
-    appId: "1:199449178140:web:b3b29f0a51408e45f6efd9"
+    authDomain: "dynamic-final.firebaseapp.com",
+    databaseURL: "https://dynamic-final.firebaseio.com",
+    projectId: "dynamic-final",
+    storageBucket: "dynamic-final.appspot.com",
+    messagingSenderId: "380304267255",
+    appId: "1:380304267255:web:4d40ff39c670071d5b80f2"
   };
   function nameFunction(name, userId) {
     axios.get(`https://final-dynamic-web.herokuapp.com/create-user?name=${name}&userId=${userId}`)
