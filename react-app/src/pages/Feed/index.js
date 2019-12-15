@@ -5,12 +5,13 @@ import AddPost from "../../components/AddPost";
 
 export default function Feed({ user }) {
     const collection = '4358592';
-    // const URL = `https://api.unsplash.com/collections/${collection}/photos/?client_id=cb1f777bccf37e7cff6f910a65e8d166d841da85f108db436cd0695ae01be144`;
     const [post, setPost] = useState({});
     const [monkeyPic, setMonkeyPic] = useState(null);
     const [postUser, setPostUser] = useState({});
     function postAPI(){
-        axios.get('https://final-dynamic-web.herokuapp.com/')
+        axios.get('https://final-dynamic-web.herokuapp.com/', {
+            headers: {"Access-Control-Allow-Origin": "*"}
+        })
             .then(function(response) {
                 console.log('response', response.data);
                 setPost(response.data);
@@ -22,7 +23,9 @@ export default function Feed({ user }) {
             })
     }
     function getUser(userId) {
-        axios.get(`https://final-dynamic-web.herokuapp.com/get-user/${userId}`)
+        axios.get(`https://final-dynamic-web.herokuapp.com/get-user/${userId}`,{
+            headers: {"Access-Control-Allow-Origin": "*"}
+        })
             .then(function(response) {
                 console.log('response', response.data);
                 setPostUser(response.data);
@@ -35,7 +38,9 @@ export default function Feed({ user }) {
     }
 
     function queryPicAPI(queryPic) {
-        axios.get(`https://api.unsplash.com/collections/${queryPic}/photos/?client_id=cb1f777bccf37e7cff6f910a65e8d166d841da85f108db436cd0695ae01be144`)
+        axios.get(`https://api.unsplash.com/collections/${queryPic}/photos/?client_id=cb1f777bccf37e7cff6f910a65e8d166d841da85f108db436cd0695ae01be144`,{
+            headers: {"Access-Control-Allow-Origin": "*"}
+        })
         .then(function(response){
             console.log('response', response.data);
             setMonkeyPic(response.data);
@@ -76,7 +81,9 @@ export default function Feed({ user }) {
     function postFunction(e){
         let title = e.currentTarget.postTitle.value;
         let text = e.currentTarget.postText.value;
-        axios.get(`https://final-dynamic-web.herokuapp.com/submit?title=${title}&text=${text}&author=${postUser[0].nameVal}`)
+        axios.get(`https://final-dynamic-web.herokuapp.com/submit?title=${title}&text=${text}&author=${postUser[0].nameVal}`,{
+            withCredentials: true
+        })
             .then(function(response){
                 console.log("it's working my g", response);
                 return response;
