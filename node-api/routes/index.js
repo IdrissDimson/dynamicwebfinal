@@ -17,28 +17,22 @@ let firebaseConfig = {
 const firebaseDatabase = firebase.initializeApp(firebaseConfig);
 const db = firebaseDatabase.firestore();
 
-let allPosts = [];
-db.collection('posts')
-    // .get()
-    // .then((blogPosts) => {
-    //     blogPosts.forEach((post) => {
-    //         allPosts.push(post.data())
-    //         console.log("All posts:", post.data())
-    //     });
-    // })
-    // .catch((err) => {
-    //     console.log('Error getting documents', err);
-    // })
-
-    .get().then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        allPosts.push(doc.data())
-        console.log("All posts:", doc.data())
-      });
-  });
-
 router.get('/', (req, res) => {
-    res.send(allPosts)
+  db
+    .collection('posts')
+    .get()
+    .then((data) => {
+      let allPosts = [];
+      data.forEach((post) => {
+        allPosts.push({
+          ...post.data()
+        })
+      });
+      return res.status(200).json(allPosts);
+    })
+    .catch((err) => {
+      console.error('Error getting documents', err);
+    })
 })
 
 module.exports = router;

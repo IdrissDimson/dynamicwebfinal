@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import PostSection from '../../components/PostSection';
 import AddPost from "../../components/AddPost";
@@ -8,33 +9,24 @@ export default function Feed({ user }) {
     const [post, setPost] = useState({});
     const [monkeyPic, setMonkeyPic] = useState(null);
     const [postUser, setPostUser] = useState({});
+
+    let history = useHistory(); 
+    
     function postAPI(){
-        axios.get('https://final-dynamic-web.herokuapp.com/', {
-            headers: {"Access-Control-Allow-Origin": "*"}
-        })
-            .then(function(response) {
+        axios.get('/api')
+            .then((response) => {
                 console.log('response', response.data);
                 setPost(response.data);
-                return response;
             })
-            .catch(function(error){
-                console.log("error", error);
-                return error;
-            })
+            .catch((error) => console.log("error", error))
     }
-    function getUser(userId) {
-        axios.get(`https://final-dynamic-web.herokuapp.com/get-user/${userId}`,{
-            headers: {"Access-Control-Allow-Origin": "*"}
-        })
-            .then(function(response) {
+    function getUser() {
+        axios.get(`/api/get-user/${user.uid}`)
+            .then((response) => {
                 console.log('response', response.data);
                 setPostUser(response.data);
-                return response;
             })
-            .catch(function(error){
-                console.log("error", error);
-                return error;
-            })
+            .catch((error) => console.log("error", error))
     }
 
     function queryPicAPI(queryPic) {
@@ -53,55 +45,36 @@ export default function Feed({ user }) {
     }
     // console.log(post[0]);
     useEffect(() => {
-        // const source = axios.CancelToken.source();
+        getUser()
         postAPI()
-        // const loadData = async () => {
-        //     try {
-        //       const response = await axios.get(URL, {
-        //         cancelToken: source.token
-        //       });
-        //       setMonkeyPic(response.data);
-        //     } catch (error) {
-        //       if (axios.isCancel(error)) {
-        //         // request cancelled
-        //       } else {
-        //         throw error;
-        //       }
-        //     }
-        //   };
-         
-        // loadData()
         queryPicAPI(collection)
-        getUser(user.uid)
-        // return () => {
-        //     source.cancel();
-        // };
-    }, [user.uid])
+    }, [])
 
     function postFunction(e){
-        let title = e.currentTarget.postTitle.value;
-        let text = e.currentTarget.postText.value;
-        axios.get(`https://final-dynamic-web.herokuapp.com/submit?title=${title}&text=${text}&author=${postUser[0].nameVal}`,{
-            withCredentials: true
-        })
-            .then(function(response){
+        e.preventDefault();
+
+        let titleVal = e.currentTarget.postTitle.value;
+        let textVal = e.currentTarget.postText.value;
+        axios.post(`/api/submit`, {
+                title: titleVal,
+                text: textVal,
+                author: (postUser[0] && postUser[0].nameVal),
+                userId: user.uid
+            })
+            .then((response) => {
                 console.log("it's working my g", response);
-                return response;
+                history.push("/");
             })
-            .catch(function(error) {
-                console.log("error", error);
-                return error;
-            })
+            .catch((error) => console.log("error", error))
     }
-    // console.log(monkeyPic[0] && monkeyPic[0].urls.full);
+    
     if (user.uid !== undefined) {
         return (
             <section>
                 <h1>Welcome Back to Screech, {postUser[0] && postUser[0].nameVal} </h1>
                 <AddPost postFunction={postFunction} />
                 <div className="screech-feed">
-                    {}
-                    {post[0] && post.map((post, i) => <PostSection monkey={monkeyPic[i] && monkeyPic[i]} key={i} author={post.author} title={post.title} text={post.text}  />)}
+                    {post[0] && post.map((post, i) => <PostSection key={i} monkey={monkeyPic[i] && monkeyPic[i]} author={post.author} title={post.title} text={post.text}  />)}
                 </div>
             </section>
         );
@@ -110,7 +83,7 @@ export default function Feed({ user }) {
             <section>
                 <h1>Welcome to Screech</h1>
                 <div className="screech-feed">
-                    {post[0] && post.map((post, i) => <PostSection key={i} monkey={monkeyPic[i] && monkeyPic[i]} title={post.title} text={post.text} author={post.author}/>)}
+                    {post[0] && post.map((post, i) => <PostSection key={i} monkey={monkeyPic[i] && monkeyPic[i]} author={post.author} title={post.title} text={post.text}  />)}
                 </div>
             </section>
         );

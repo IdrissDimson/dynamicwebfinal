@@ -11,7 +11,7 @@ const sampleData = {
     author: 'James Ayres'
 }
 
-router.get("/test", (req, res) => {
+router.post("/test", (req, res) => {
     db.collection("posts")
     .doc("test-doc")
     .set(sampleData)
@@ -19,18 +19,21 @@ router.get("/test", (req, res) => {
     .catch(function(error){res.send('Error', error)})
 })
 //Submit Data
-router.get("/", (req, res) => {
-    let titleVal = req.query.title ? req.query.title : '';
-    let textVal =  req.query.text ? req.query.text : '';
-    let authorVal = req.query.author ? req.query.author : '';
-    
-    db.collection("posts")
-    .add({
-        title: titleVal,
-        text: textVal,
-        author: authorVal
-    })
-    .then(ref => res.send(ref))
-    .catch(e => res.send(e));
+router.post("/", (req, res) => {
+    const newScreech = {
+        title: req.body.title ? req.body.title : '',
+        text: req.body.text ? req.body.text : '',
+        author: req.body.author ? req.body.author : '',
+        userId: req.body.userId ? req.body.userId : ''
+    };
+    // res.json(newScreech);
+    db
+        .collection("posts")
+        .add(newScreech)
+        .then(ref => res.send(`${ref.id} successfully submitted`))
+        .catch(e => {
+            res.status(500).json(e);
+            console.error(e);
+        });
 })
 module.exports = router;

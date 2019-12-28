@@ -9,7 +9,7 @@ router.get('/:postId', (req, res) => {
     let postsArray = [];
 
     let citiesRef = db.collection('posts');
-    let query = citiesRef.where('author', '==', `${req.params.postId}`).get()
+    let query = citiesRef.where('userId', '==', `${req.params.postId}`).get()
         .then(snapshot => {
             if (snapshot.empty) {
                 console.log('No matching documents.');
@@ -19,7 +19,7 @@ router.get('/:postId', (req, res) => {
                 console.log(doc.id, '=>', doc.data());
                 postsArray.push(doc.data());
             });
-            res.send(postsArray);
+            res.status(200).json(postsArray);
         })
         .catch(err => {
             console.log('Error getting documents', err);

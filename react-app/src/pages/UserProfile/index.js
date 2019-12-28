@@ -1,83 +1,65 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { UserInformation } from "../../components/UserProfileComponent";
+// import { UserInformation } from "../../components/UserProfileComponent";
 import PostSection from '../../components/PostSection';
 import AddPost from "../../components/AddPost";
 
 export default function UserProfile({ user }) {
     const collection = '4358592';
-    const URL = `https://api.unsplash.com/collections/${collection}/photos/?client_id=cb1f777bccf37e7cff6f910a65e8d166d841da85f108db436cd0695ae01be144`;
     const [postUser, setPostUser] = useState({});
-    const [monkeyPic, setMonkeyPic] = useState(null);
     const [post, setPost] = useState({});
+    const [monkeyPic, setMonkeyPic] = useState(null);
 
-    function postAPI(username){
-        axios.get(`https://final-dynamic-web.herokuapp.com/post/${username}`)
-            .then(function(response) {
+    function queryPicAPI(queryPic) {
+        axios.get(`https://api.unsplash.com/collections/${queryPic}/photos/?client_id=cb1f777bccf37e7cff6f910a65e8d166d841da85f108db436cd0695ae01be144`)
+        .then((response) => {
+            console.log('response', response.data);
+            setMonkeyPic(response.data);
+        })
+        .catch((error) => console.log('error', error))
+    }
+    function getUserPosts() {
+        axios.get(`/api/get-post/${user.uid}`)
+            .then((response) => {
                 console.log('response', response.data);
                 setPost(response.data);
-                return response;
             })
-            .catch(function(error){
-                console.log("error", error);
-                return error;
-            })
+            .catch((error) => console.log("error", error))
     }
-    function getUser(userId) {
-        axios.get(`https://final-dynamic-web.herokuapp.com/get-user/${userId}`)
-            .then(function(response) {
+    function getUser() {
+        axios.get(`/api/get-user/${user.uid}`)
+            .then((response) => {
                 console.log('response', response.data);
                 setPostUser(response.data);
-                return response;
             })
-            .catch(function(error){
-                console.log("error", error);
-                return error;
-            })
+            .catch((error) => console.log("error", error))
     }
-    function postFunction(e){
-        let title = e.currentTarget.postTitle.value;
-        let text = e.currentTarget.postText.value;
-        axios.get(`https://final-dynamic-web.herokuapp.com/submit?title=${title}&text=${text}&author=${postUser[0].nameVal}`)
-            .then(function(response){
+    function userPostFunction(e){
+        e.preventDefault();
+
+        let titleVal = e.currentTarget.postTitle.value;
+        let textVal = e.currentTarget.postText.value;
+        axios.post(`/api/submit`, {
+                title: titleVal,
+                text: textVal,
+                author: (postUser[0] && postUser[0].nameVal),
+                userId: user.uid
+            })
+            .then((response) => {
                 console.log("it's working my g", response);
-                return response;
             })
-            .catch(function(error) {
-                console.log("error", error);
-                return error;
-            })
+            .catch((error) => console.log("error", error))
     }
     useEffect(() => {
-        const source = axios.CancelToken.source();
+        getUserPosts()
         getUser()
-        const loadData = async () => {
-            try {
-              const response = await axios.get(URL, {
-                cancelToken: source.token
-              });
-              setMonkeyPic(response.data);
-            } catch (error) {
-              if (axios.isCancel(error)) {
-                // request cancelled
-              } else {
-                throw error;
-              }
-            }
-          };
-         
-        loadData()
-        postAPI((postUser[0] && postUser[0].nameVal))
-        return () => {
-            source.cancel();
-        };
-    }, [postUser, user.uid, URL])
-    
+        queryPicAPI(collection)
+    }, [])
     return (
         <section className="profile-pic">
             <h1>User Profile for {postUser[0] && postUser[0].nameVal}</h1>
-            <UserInformation email={user.email ? user.email : "Error!"}/>
-            <AddPost postFunction={postFunction} />
+            {/* <UserInformation email={user.email ? user.email : "Error!"}/> */}
+            <AddPost postFunction={userPostFunction} />
             <h2>Your Posts</h2>
             <div className="screech-feed">
                 {post[0] && post.map((post, i) => <PostSection key={i} monkey={monkeyPic[i] && monkeyPic[i]} author={post.author} title={post.title} text={post.text}  />)}

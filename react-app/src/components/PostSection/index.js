@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PostSection({ title, text, author, monkey }) {
+export default function PostSection({ title, text, author, monkey}) {
     // console.log("yeet", monkey.urls.full);
     return (
         <div>

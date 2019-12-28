@@ -28,7 +28,7 @@ function App() {
     appId: "1:380304267255:web:4d40ff39c670071d5b80f2"
   };
   function nameFunction(name, userId) {
-    axios.get(`https://final-dynamic-web.herokuapp.com/create-user?name=${name}&userId=${userId}`)
+    axios.get(`/api/create-user?name=${name}&userId=${userId}`)
         .then(function(response) {
             console.log("it's working my gggg", response);
             return response;

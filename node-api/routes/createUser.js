@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
     .set({
         nameVal: nameVal,
     })
-    .then(ref => res.send(ref))
+    .then(ref => res.send(`${ref.id} successfully submitted`))
     .catch(e => res.send(e));
 })
 

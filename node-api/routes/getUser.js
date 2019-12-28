@@ -6,12 +6,13 @@ const db = firebase.firestore();
 
 let posts = [];
 router.get('/:userId', (req, res) => {
-    db.collection('users')
+    db
+    .collection('users')
     .doc(`${req.params.userId}`)
     .get()
     .then((doc) => {
         if (!doc.exists) {
-            console.log('No such document!');
+            return console.log('No such document!');
         } else {
             posts = [];
             posts.push(doc.data());

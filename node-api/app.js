@@ -1,31 +1,27 @@
 const express = require('express');
-const path = require("path");
-const cors = require("cors");
-
 // define app and port variables
 const app = express();
 const port = process.env.PORT || 4000;
+const path = require("path");
+const bodyParser = require('body-parser');
+
 // routes
-const indexRoute = require('./routes/index.js');
-const postRoute = require('./routes/post.js');
-const submitRoute = require('./routes/submit.js');
-const userRoute = require('./routes/createUser.js');
-const getUserRoute = require('./routes/getUser.js');
+let indexRoute = require('./routes/index.js');
+let postRoute = require('./routes/post.js');
+let submitRoute = require('./routes/submit.js');
+let userRoute = require('./routes/createUser.js');
+let getUserRoute = require('./routes/getUser.js');
 
 //explicitly define the public folder with express.static and path
-app.use(express.static(path.join(__dirname, "public")))
+app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-app.use(cors());
 //define routes
-app.use('/', indexRoute)
-app.use('/post', postRoute)
-app.use('/submit', submitRoute)
-app.use('/create-user', userRoute)
-app.use('/get-user', getUserRoute)
+app.use('/api/', indexRoute);
+app.use('/api/get-post', postRoute);
+app.use('/api/submit', submitRoute);
+app.use('/api/create-user', userRoute);
+app.use('/api/get-user', getUserRoute);
 
-//create form
-app.use('/submit-form', (req, res) =>
-    res.sendFile("/public/form.html", {root: __dirname})
-)
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
