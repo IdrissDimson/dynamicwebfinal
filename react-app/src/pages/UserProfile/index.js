@@ -19,7 +19,7 @@ export default function UserProfile({ user }) {
         .catch((error) => console.log('error', error))
     }
     function getUserPosts() {
-        axios.get(`/api/get-post/${user.uid}`)
+        axios.get(`https://final-dynamic-web.herokuapp.com/api/get-post/${user.uid}`)
             .then((response) => {
                 console.log('response', response.data);
                 setPost(response.data);
@@ -27,7 +27,7 @@ export default function UserProfile({ user }) {
             .catch((error) => console.log("error", error))
     }
     function getUser() {
-        axios.get(`/api/get-user/${user.uid}`)
+        axios.get(`https://final-dynamic-web.herokuapp.com/api/get-user/${user.uid}`)
             .then((response) => {
                 console.log('response', response.data);
                 setPostUser(response.data);
@@ -39,7 +39,7 @@ export default function UserProfile({ user }) {
 
         let titleVal = e.currentTarget.postTitle.value;
         let textVal = e.currentTarget.postText.value;
-        axios.post(`/api/submit`, {
+        axios.post(`https://final-dynamic-web.herokuapp.com/api/submit`, {
                 title: titleVal,
                 text: textVal,
                 author: (postUser[0] && postUser[0].nameVal),

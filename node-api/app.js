@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 4000;
 const path = require("path");
+const cors = require("cors");
 const bodyParser = require('body-parser');
 
 // routes
@@ -12,6 +13,8 @@ let submitRoute = require('./routes/submit.js');
 let userRoute = require('./routes/createUser.js');
 let getUserRoute = require('./routes/getUser.js');
 
+//Bane of my existance
+app.use(cors());
 //explicitly define the public folder with express.static and path
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json()); // support json encoded bodies
